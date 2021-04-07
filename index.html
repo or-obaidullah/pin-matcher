@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input class="form-control" type="text" id="randomPrint">
+                    <button class="generate-btn" onclick="randomGenerate()">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input class="form-control" type="text" id="numberPrint">
+                    <div class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                              <div class="button" onclick="clickNumber(this.innerText)">7</div>
+                              <div class="button" onclick="clickNumber(this.innerText)">8</div>
+                              <div class="button" onclick="clickNumber(this.innerText)">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button" onclick="clickNumber(this.innerText)">4</div>
+                              <div class="button" onclick="clickNumber(this.innerText)">5</div>
+                              <div class="button" onclick="clickNumber(this.innerText)">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button" onclick="clickNumber(this.innerText)">1</div>
+                              <div class="button" onclick="clickNumber(this.innerText)">2</div>
+                              <div class="button" onclick="clickNumber(this.innerText)">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button" onclick="removeOneByOne()">&times;</div>
+                                <div class="button" onclick="clickNumber(this.innerText)">0</div>
+                                <div class="button" onclick="clearDisplay()">C</div>
+                            </div>
+                            <div>
+                                <button type="submit" class="submit-btn" onclick="matchingSubmit()" id="cal-submit">Submit</button>
+                                <p class="action-left" id="try-left"></p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notify-section">
+            <p class="notify" id="not-match">❌ Pin Didn't Match, Please try again</p>
+            <p class="notify" id="match">✅ Pin Matched... Secret door is opening for you</p>
+        </div>
+    </div>
+
+
+    <script>
+        function randomGenerate(){
+            var random = Math.floor(1000+ Math.random() * 9000);
+            document.getElementById('randomPrint').value = random;
+
+        }
+        function clickNumber(num){
+            var current = document.getElementById('numberPrint').value;
+            document.getElementById('numberPrint').value = current + num;
+        }
+
+        function clearDisplay(){
+            document.getElementById('numberPrint').value =null;
+        }
+        function removeOneByOne(){
+            var num = document.getElementById('numberPrint').value;
+            document.getElementById('numberPrint').value = num.substr(0, num.length - 1);
+        }
+        var click =0;
+        function matchingSubmit(){
+            var random = document.getElementById('randomPrint').value;
+            var inputNum = document.getElementById('numberPrint').value;
+            if(random == inputNum){
+                document.getElementById('match').style.display = 'block';
+                document.getElementById('not-match').style.display = 'none';
+            }
+            else{
+                document.getElementById('not-match').style.display = 'block';
+                document.getElementById('match').style.display = 'none';
+                click = click+1;
+                if(click == 1){
+                    document.getElementById('try-left').innerText = "3 try left";
+                }else if(click == 2){
+                    document.getElementById('try-left').innerText = "2 try left";
+                }else if(click == 3){
+                    document.getElementById('try-left').innerText = "1 try left";
+                }else{
+                    document.getElementById("cal-submit").disabled = true;
+                    document.getElementById('try-left').innerText = "0 try left";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
